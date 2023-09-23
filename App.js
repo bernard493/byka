@@ -14,10 +14,10 @@ export default function App() {
     //   </NativeBaseProvider>
     //   <FlashMessage position="top" />
     // </Provider>
-    <AppStack />
-    // <View className="flex-1 items-center justify-center bg-white">
-    //   <Text className=" font-bold">HELLO</Text>
-    //   <StatusBar backgroundColor="#039BE5" />
-    // </View>
+    <>
+      <StatusBar  />
+      <AppStack />
+    </>
+   
   );
 }
