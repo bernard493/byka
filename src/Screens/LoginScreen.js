@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 // import { useDispatch } from "react-redux";
 import COLORS from "../Constants/style";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { showMessage } from "react-native-flash-message";
 
 const initialState = {
   email: "",
@@ -46,6 +47,40 @@ const LoginScreen = () => {
   const navigate = useNavigation();
   // const dispatch = useDispatch();
   const [state, dispatchState] = useReducer(reducer, initialState);
+
+  const validateForm = () => {
+    if (!state?.email || !state?.password) {
+      showMessage({
+        message: "Invalid Details",
+        description: "Please fill all the details",
+        type: "danger",
+      });
+      return false;
+    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(state.email)) {
+      showMessage({
+        message: "Invalid Email",
+        description: "Please enter a valid email",
+        type: "danger",
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const handelLogin = () => {
+      if(validateForm()){
+        showMessage({
+          message: "API Call",
+          description: "hit api with user data",
+          type: "info",
+        });
+        navigate.navigate("AuthNumberScreen");
+
+      }
+
+
+
+  };
 
   const toggleShowPassword = () => {
     dispatchState({ type: "SET_SHOW_PASSWORD", payload: !state.showPassword });
@@ -105,9 +140,7 @@ const LoginScreen = () => {
         </View>
         <View>
           <TouchableOpacity
-            onPress={() => {
-              // navigate.replace("Login");
-            }}
+            onPress={handelLogin}
             activeOpacity={0.6}
             className={` bg-[#FFD84E] py-5 px-6  rounded-3xl flex-row items-center justify-center space-x-5`}
           >
@@ -143,10 +176,11 @@ const LoginScreen = () => {
           <Text className="text-[13px] font-medium text-gray-500">
             Don't have an account?
           </Text>
-          <TouchableOpacity 
-          onPress={() => {
+          <TouchableOpacity
+            onPress={() => {
               navigate.navigate("Register");
-            }} >
+            }}
+          >
             <Text className="text-[13px] font-bold ">Sign Up</Text>
           </TouchableOpacity>
         </View>

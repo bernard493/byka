@@ -9,16 +9,15 @@ import React, { useReducer } from "react";
 import AuthInputComponent from "../Components/authInputComponent/AuthInputComponent";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
+import { showMessage } from "react-native-flash-message";
 // import * as SecureStore from "expo-secure-store";
 // import { useDispatch } from "react-redux";
 import COLORS from "../Constants/style";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 const initialState = {
-  name: "",
   email: "",
   password: "",
-  phoneNumber: "",
   confirmPassword: "",
   showPassword: true,
   showConfirmPassword: true,
@@ -29,16 +28,13 @@ const initialState = {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "SET_NAME":
-      return { ...state, name: action.payload };
     case "SET_EMAIL":
       return { ...state, email: action.payload };
     case "SET_PASSWORD":
       return { ...state, password: action.payload };
     case "SET_CONFIRM_PASSWORD":
       return { ...state, confirmPassword: action.payload };
-    case "SET_PHONE_NUMBER":
-      return { ...state, phoneNumber: action.payload };
+
     case "SET_IS_ERROR":
       return { ...state, isError: action.payload };
     case "SET_LOGGING_IN":
@@ -54,18 +50,14 @@ const reducer = (state, action) => {
   }
 };
 
-
 const RegisterScreen = () => {
   const navigate = useNavigation();
   // const dispatch = useDispatch();
   const [state, dispatchState] = useReducer(reducer, initialState);
 
-  
   const validateForm = () => {
     if (
-      state.name === "" ||
       state.email === "" ||
-      state.phoneNumber === "" ||
       state.password === "" ||
       state.confirmPassword === ""
     ) {
@@ -96,37 +88,36 @@ const RegisterScreen = () => {
   const handelRegister = async () => {
     if (validateForm()) {
       try {
-        registerUser({
-          name: state.name,
-          email: state.email.toLocaleLowerCase(),
-          password: state.password,
-          phoneNumber: state.phoneNumber,
-        }).then(async (response) => {
-          dispatchState({ type: "SET_LOGGING_IN", payload: true });
+        // registerUser({
+        //   email: state.email.toLocaleLowerCase(),
+        //   password: state.password,
+        // }).then(async (response) => {
+        //   dispatchState({ type: "SET_LOGGING_IN", payload: true });
 
-          try {
-            const data = response.data;
-            if (response.status !== 200) {
-              showMessage({
-                message: "Email already registered",
-                description: "Please User already registered try new email",
-                type: "danger",
-              });
+        //   try {
+        //     const data = response.data;
+        //     if (response.status !== 200) {
+        //       showMessage({
+        //         message: "Email already registered",
+        //         description: "Please User already registered try new email",
+        //         type: "danger",
+        //       });
 
-              dispatchState({ type: "SET_LOGGING_IN", payload: false });
-            } else {
-              const { token, user } = data;
-              await SecureStore.setItemAsync(
-                "UserData",
-                JSON.stringify({ token, user })
-              );
-              dispatch(setUser({ token, user }));
-              dispatchState({ type: "SET_LOGGING_IN", payload: false });
-            }
-          } catch (error) {
-            console.error("try error", error);
-          }
-        });
+        //       dispatchState({ type: "SET_LOGGING_IN", payload: false });
+        //     } else {
+        //       const { token, user } = data;
+        //       await SecureStore.setItemAsync(
+        //         "UserData",
+        //         JSON.stringify({ token, user })
+        //       );
+        //       dispatch(setUser({ token, user }));
+        //       dispatchState({ type: "SET_LOGGING_IN", payload: false });
+        //     }
+        //   } catch (error) {
+        //     console.error("try error", error);
+        //   }
+        // });
+        navigate.navigate("AuthNumberScreen");
       } catch (error) {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -157,7 +148,6 @@ const RegisterScreen = () => {
       payload: !state.showConfirmPassword,
     });
   };
-
 
   return (
     <SafeAreaView className="flex-1  bg-white">
@@ -195,7 +185,7 @@ const RegisterScreen = () => {
           </View>
           <View>
             <AuthInputComponent
-             value={state.confirmPassword}
+              value={state.confirmPassword}
               isFocus={state.isFocus}
               toggleFocus={toggleFocus}
               onChangeText={(text) =>
@@ -225,9 +215,7 @@ const RegisterScreen = () => {
         </View>
         <View>
           <TouchableOpacity
-            onPress={() => {
-              // navigate.replace("Login");
-            }}
+            onPress={handelRegister}
             activeOpacity={0.6}
             className={` bg-[#FFD84E] py-5 px-6  rounded-3xl flex-row items-center justify-center space-x-5`}
           >
