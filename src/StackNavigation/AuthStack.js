@@ -2,6 +2,8 @@ import { View, Text } from "react-native";
 import React from "react";
 import LoginScreen from "../Screens/LoginScreen";
 import RegisterScreen from "../Screens/RegisterScreen";
+import AuthNumberScreen from "../Screens/AuthNumberScreen";
+import AuthCodeScreen from "../Screens/AuthCodeScreen";
 import Onboarding from "../Components/Onboarding/Onboarding";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -14,6 +16,8 @@ const AuthStack = () => {
       <Stack.Screen name="Onboarding" component={Onboarding} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="AuthNumberScreen" component={AuthNumberScreen} />
+      <Stack.Screen name="AuthCodeScreen" component={AuthCodeScreen} />
     </Stack.Navigator>
   );
 };
