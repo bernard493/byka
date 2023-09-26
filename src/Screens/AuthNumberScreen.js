@@ -27,7 +27,7 @@ const AuthNumberScreen = () => {
 
   return (
     <SafeAreaView className="flex-1  bg-white">
-      <View className="px-6 space-y-3">
+      <View className="px-6 space-y-3 pt-20">
         <View className="pt-20 space-y-3">
           <View>
             <Text className="text-3xl font-semibold">Enter your </Text>
