@@ -35,7 +35,7 @@ const AppStack = () => {
       {/* )} */}
       {/* {!loading && ( */}
         <NavigationContainer>
-          {false ? <StackNavigation /> : <AuthStack />}
+          {true ? <StackNavigation /> : <AuthStack />}
         </NavigationContainer>
       {/* )} */}
     </>
